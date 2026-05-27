@@ -1,85 +1,41 @@
 extends Node2D
 
-# =====================================================
-# CONFIG
-# =====================================================
-const TILE_SIZE := 32.0
+const CHUNK_SIZE := 16
+const HEIGHT := 16
+const TILE_H := 16
 
-# nanti gampang upgrade ke chunk 16x16
-const CHUNK_WIDTH := 1
-const CHUNK_HEIGHT := 1
+var layers: Array[TileMapLayer] = []
 
-# =====================================================
-# NODE
-# =====================================================
-var mesh_instance: MeshInstance2D
+var noise := FastNoiseLite.new()
 
-
-# =====================================================
-# INIT
-# =====================================================
 func _ready():
-	create_mesh_node()
-	build_chunk()
+	noise.seed = randi()
+	noise.frequency = 0.01
+	_create_layers()
+	_fill()
+
+func _fill():
+	for x in range(CHUNK_SIZE):
+		for y in range(CHUNK_SIZE):
+			# noise return -1..1, kita map ke 0..HEIGHT
+			var height := int((noise.get_noise_2d(x, y) + 1.0) / 2.0 * HEIGHT)
+			for z in range(HEIGHT):
+				var cell := Vector2i(x - (CHUNK_SIZE >> 1), y - (CHUNK_SIZE >> 1))
+				if z > height:
+					continue # skip, udara
+				elif z == height:
+					layers[z].set_cell(cell, 0, Vector2i(0, 0)) # grass
+				else:
+					layers[z].set_cell(cell, 0, Vector2i(4, 0)) # dirt
 
 
-# =====================================================
-# CREATE MESH NODE
-# =====================================================
-func create_mesh_node():
-	mesh_instance = MeshInstance2D.new()
-	add_child(mesh_instance)
-
-
-# =====================================================
-# MAIN BUILD CHUNK
-# =====================================================
-func build_chunk():
-	var st = SurfaceTool.new()
-	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-
-	# sementara 1 tile dulu (nanti loop chunk)
-	for x in range(CHUNK_WIDTH):
-		for y in range(CHUNK_HEIGHT):
-			add_tile(st, x, y)
-
-	mesh_instance.mesh = st.commit()
-
-
-# =====================================================
-# TILE RENDER ENTRY
-# =====================================================
-func add_tile(st: SurfaceTool, x: int, y: int):
-	var pos = iso_project(x, y)
-	draw_iso_quad(st, pos)
-
-
-# =====================================================
-# ISOMETRIC PROJECTION
-# =====================================================
-func iso_project(x: float, y: float) -> Vector2:
-	return Vector2(
-		(x - y) * (TILE_SIZE * 0.5),
-		(x + y) * (TILE_SIZE * 0.25)
-	)
-
-
-# =====================================================
-# DRAW TILE QUAD (PURE RENDER LAYER)
-# =====================================================
-func draw_iso_quad(st: SurfaceTool, pos: Vector2):
-
-	var top    = Vector3(pos.x, pos.y - TILE_SIZE * 0.25, 0)
-	var right  = Vector3(pos.x + TILE_SIZE * 0.5, pos.y, 0)
-	var bottom = Vector3(pos.x, pos.y + TILE_SIZE * 0.25, 0)
-	var left   = Vector3(pos.x - TILE_SIZE * 0.5, pos.y, 0)
-
-	# TRIANGLE 1
-	st.set_uv(Vector2(0, 0)); st.add_vertex(top)
-	st.set_uv(Vector2(1, 0)); st.add_vertex(right)
-	st.set_uv(Vector2(1, 1)); st.add_vertex(bottom)
-
-	# TRIANGLE 2
-	st.set_uv(Vector2(0, 0)); st.add_vertex(top)
-	st.set_uv(Vector2(1, 1)); st.add_vertex(bottom)
-	st.set_uv(Vector2(0, 1)); st.add_vertex(left)
+func _create_layers():
+	for z in range(HEIGHT):
+		var layer := TileMapLayer.new()
+		layer.name = "Layer_%d" % z
+		layer.tile_set = $TileMapLayer.tile_set
+		layer.y_sort_enabled = true
+		layer.z_index = z
+		layer.position.y = - (z - HEIGHT / 2.0) * TILE_H
+		add_child(layer)
+		layers.append(layer)

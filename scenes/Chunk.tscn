@@ -38,14 +38,9 @@ sources/0 = SubResource("TileSetAtlasSource_unaa7")
 [node name="Chunk" type="Node2D" unique_id=86559115]
 texture_filter = 1
 script = ExtResource("1_01iku")
-atlas_texture = ExtResource("1_qt7hk")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=612998593]
-visible = false
 y_sort_enabled = true
 tile_set = SubResource("TileSet_o3c2t")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1250037815]
-
-[node name="MeshInstance2D" type="MeshInstance2D" parent="." unique_id=1208490640]
-visible = false
