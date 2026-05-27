@@ -1,0 +1,73 @@
+{
+  "atlases": [
+    {
+      "atlas_id": 0,
+      "types": {
+        "grounds": [
+          {
+            "name": "grass",
+            "atlas_coord": [0, 0],
+            "replaceable": true
+          },
+          {
+            "name": "dirt",
+            "atlas_coord": [4, 0],
+            "replaceable": true
+          },
+          {
+            "name": "sand",
+            "atlas_coord": [2, 0],
+            "replaceable": true
+          },
+          {
+            "name": "stone",
+            "atlas_coord": [0, 1],
+            "replaceable": true
+          },
+          {
+            "name": "snow",
+            "atlas_coord": [1, 0],
+            "replaceable": true
+          },
+          {
+            "name": "dirt_snow",
+            "atlas_coord": [3, 1],
+            "replaceable": true
+          }
+        ]
+      }
+    },
+    {
+      "atlas_id": 1,
+      "types": {
+        "grounds": [
+          {
+            "name": "grass_block",
+            "atlas_coord": [5, 2],
+            "replaceable": false
+          },
+          {
+            "name": "dirt_block",
+            "atlas_coord": [1, 0],
+            "replaceable": false
+          },
+          {
+            "name": "stone_block",
+            "atlas_coord": [2, 0],
+            "replaceable": false
+          },
+          {
+            "name": "sand_block",
+            "atlas_coord": [3, 0],
+            "replaceable": false
+          },
+          {
+            "name": "snow_block",
+            "atlas_coord": [4, 0],
+            "replaceable": false
+          }
+        ]
+      }
+    }
+  ]
+}

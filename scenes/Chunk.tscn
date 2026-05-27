@@ -1,49 +1,7 @@
 [gd_scene format=3 uid="uid://bkm2efl0xfcqt"]
 
 [ext_resource type="Script" uid="uid://cuo0xg30jfw0j" path="res://scripts/chunk.gd" id="1_01iku"]
-[ext_resource type="Texture2D" uid="uid://dsx5b3vnhdqtf" path="res://assets/Sprite-0002.png" id="1_qt7hk"]
-[ext_resource type="Resource" uid="uid://cfdmtkpvf65g4" path="res://resource/block_registry.tres" id="2_01iku"]
-
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_unaa7"]
-texture = ExtResource("1_qt7hk")
-texture_region_size = Vector2i(32, 32)
-0:0/0 = 0
-0:0/0/texture_origin = Vector2i(0, -8)
-1:0/0 = 0
-1:0/0/texture_origin = Vector2i(0, -8)
-2:0/0 = 0
-2:0/0/texture_origin = Vector2i(0, -8)
-3:0/0 = 0
-4:0/0 = 0
-4:0/0/texture_origin = Vector2i(0, -8)
-0:1/0 = 0
-0:1/0/texture_origin = Vector2i(0, -8)
-1:1/0 = 0
-1:1/0/texture_origin = Vector2i(0, -8)
-2:1/0 = 0
-3:1/0 = 0
-0:2/0 = 0
-1:2/0 = 0
-0:4/0 = 0
-0:4/0/texture_origin = Vector2i(0, -8)
-3:4/0 = 0
-3:4/0/texture_origin = Vector2i(0, -8)
-4:4/0 = 0
-4:4/0/texture_origin = Vector2i(0, -8)
-
-[sub_resource type="TileSet" id="TileSet_o3c2t"]
-tile_shape = 1
-tile_layout = 4
-tile_size = Vector2i(32, 16)
-sources/0 = SubResource("TileSetAtlasSource_unaa7")
 
 [node name="Chunk" type="Node2D" unique_id=86559115]
 texture_filter = 1
 script = ExtResource("1_01iku")
-registry = ExtResource("2_01iku")
-
-[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=612998593]
-y_sort_enabled = true
-tile_set = SubResource("TileSet_o3c2t")
-
-[node name="Camera2D" type="Camera2D" parent="." unique_id=1250037815]
