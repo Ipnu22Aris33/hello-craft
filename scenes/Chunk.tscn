@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cuo0xg30jfw0j" path="res://scripts/chunk.gd" id="1_01iku"]
 [ext_resource type="Texture2D" uid="uid://dsx5b3vnhdqtf" path="res://assets/Sprite-0002.png" id="1_qt7hk"]
+[ext_resource type="Resource" uid="uid://cfdmtkpvf65g4" path="res://resource/block_registry.tres" id="2_01iku"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_unaa7"]
 texture = ExtResource("1_qt7hk")
@@ -14,6 +15,7 @@ texture_region_size = Vector2i(32, 32)
 2:0/0/texture_origin = Vector2i(0, -8)
 3:0/0 = 0
 4:0/0 = 0
+4:0/0/texture_origin = Vector2i(0, -8)
 0:1/0 = 0
 0:1/0/texture_origin = Vector2i(0, -8)
 1:1/0 = 0
@@ -38,6 +40,7 @@ sources/0 = SubResource("TileSetAtlasSource_unaa7")
 [node name="Chunk" type="Node2D" unique_id=86559115]
 texture_filter = 1
 script = ExtResource("1_01iku")
+registry = ExtResource("2_01iku")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=612998593]
 y_sort_enabled = true
