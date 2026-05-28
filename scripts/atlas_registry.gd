@@ -4,7 +4,7 @@ extends Node
 const GROUNDS := {
 	0: { # atlas_id
 		"grass": {"atlas_coord": Vector2i(0, 0), "replaceable": true},
-		"dirt": {"atlas_coord": Vector2i(1, 0), "replaceable": true},
+		"dirt": {"atlas_coord": Vector2i(4, 1), "replaceable": true},
 		"sand": {"atlas_coord": Vector2i(2, 0), "replaceable": true},
 		"snow": {"atlas_coord": Vector2i(3, 0), "replaceable": true},
 		"dirt_snow": {"atlas_coord": Vector2i(4, 0), "replaceable": true},
@@ -13,8 +13,8 @@ const GROUNDS := {
 }
 
 const LIQUIDS := {
-	1: { # atlas_id
-		"water": {"atlas_coord": Vector2i(0, 0), "replaceable": false},
+	0: { # atlas_id
+		"water": {"atlas_coord": Vector2i(4, 1), "replaceable": false},
 		"lava": {"atlas_coord": Vector2i(1, 0), "replaceable": false},
 	}
 }

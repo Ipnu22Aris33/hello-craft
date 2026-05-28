@@ -36,6 +36,8 @@ texture_region_size = Vector2i(32, 32)
 3:4/0/texture_origin = Vector2i(0, -8)
 4:4/0 = 0
 4:4/0/texture_origin = Vector2i(0, -8)
+4:1/0 = 0
+4:1/0/texture_origin = Vector2i(0, -8)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hlk0d"]
 texture = ExtResource("4_1lgw5")
@@ -209,12 +211,12 @@ texture_region_size = Vector2i(32, 32)
 tile_shape = 1
 tile_layout = 4
 tile_size = Vector2i(32, 16)
+physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_1lgw5")
 sources/1 = SubResource("TileSetAtlasSource_hlk0d")
 
 [node name="World" type="Node2D" unique_id=914060483]
 script = ExtResource("1_kqs1s")
-render_distance = 8
 chunk_scene = ExtResource("2_32lhk")
 player_scene = ExtResource("3_hlk0d")
 
