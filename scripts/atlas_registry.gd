@@ -1,8 +1,7 @@
-# atlas_registry.gd (autoload)
 extends Node
 
 const GROUNDS := {
-	0: { # atlas_id
+	0: {
 		"grass": {"atlas_coord": Vector2i(0, 0), "replaceable": true},
 		"dirt": {"atlas_coord": Vector2i(4, 1), "replaceable": true},
 		"sand": {"atlas_coord": Vector2i(2, 0), "replaceable": true},
@@ -13,14 +12,37 @@ const GROUNDS := {
 }
 
 const LIQUIDS := {
-	0: { # atlas_id
-		"water": {"atlas_coord": Vector2i(4, 1), "replaceable": false},
-		"lava": {"atlas_coord": Vector2i(1, 0), "replaceable": false},
+	0: {
+		"water": {
+			"atlas_coord": Vector2i(4, 1),
+			"replaceable": false,
+			"effect": {
+				"speed_mult": 0.5,
+				"visual_offset": 10.0
+			}
+		},
+		"lava": {
+			"atlas_coord": Vector2i(1, 0),
+			"replaceable": false,
+			"effect": {
+				"speed_mult": 0.3,
+				"visual_offset": 5.0,
+				"damage": 10.0
+			}
+		},
+		"ice": {
+			"atlas_coord": Vector2i(2, 1),
+			"replaceable": false,
+			"effect": {
+				"speed_mult": 1.2,
+				"visual_offset": 0.0
+			}
+		}
 	}
 }
 
 const DECORATIONS := {
-	2: { # atlas_id
+	2: {
 		"tree": {"atlas_coord": Vector2i(0, 0), "destructible": true},
 		"rock": {"atlas_coord": Vector2i(1, 0), "destructible": true},
 		"bush": {"atlas_coord": Vector2i(2, 0), "destructible": true},
@@ -34,6 +56,10 @@ func get_ground(block_name: String) -> Dictionary:
 
 func get_liquid(block_name: String) -> Dictionary:
 	return _find(LIQUIDS, block_name)
+
+func get_liquid_effect(liquid_name: String) -> Dictionary:
+	var liquid := get_liquid(liquid_name)
+	return liquid.get("effect", {})
 
 func get_decoration(block_name: String) -> Dictionary:
 	return _find(DECORATIONS, block_name)

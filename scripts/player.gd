@@ -10,23 +10,44 @@ const GRAVITY := 500.0
 
 @onready var sprite := $AnimatedSprite2D
 
+# State
 var height := 0.0
 var vertical_velocity := 0.0
 var dash_timer := 0.0
 var dash_direction := Vector2.ZERO
 var facing_direction := Vector2.DOWN
 
+# Effect state
+var has_effect := false
+var visual_offset := 0.0
+var speed_mult := 1.0
+
+# Debug
 var debug_offset_down := false
 
+# World reference
+var world: Node2D
 
-
-func _physics_process(delta: float) -> void:
-
-	if Input.is_key_pressed(KEY_H):
-		debug_offset_down = true
+# -------------------------------------------------
+# APPLY EFFECT DARI BLOCK
+# -------------------------------------------------
+func apply_block_effect(block: Dictionary) -> void:
+	var effect = block.get("effect", {})
+	has_effect = not effect.is_empty()
+	
+	if has_effect:
+		speed_mult = effect.get("speed_mult", 1.0)
+		visual_offset = effect.get("visual_offset", 0.0)
 	else:
-		debug_offset_down = false
+		speed_mult = 1.0
+		visual_offset = 0.0
 
+# -------------------------------------------------
+# PHYSICS
+# -------------------------------------------------
+func _physics_process(delta: float) -> void:
+	debug_offset_down = Input.is_key_pressed(KEY_H)
+	
 	var input := Vector2(
 		Input.get_axis("ui_left", "ui_right"),
 		Input.get_axis("ui_up", "ui_down")
@@ -34,29 +55,20 @@ func _physics_process(delta: float) -> void:
 	
 	var move := Vector2.ZERO
 	
-	# --- Isometric movement mapping ---
-	# Up arrow -> move top-left (isometric)
 	if input == Vector2.UP:
 		move = Vector2.LEFT + Vector2.UP * 0.5
-	# Down arrow -> move bottom-right
 	elif input == Vector2.DOWN:
 		move = Vector2.RIGHT + Vector2.DOWN * 0.5
-	# Left arrow -> move bottom-left
 	elif input == Vector2.LEFT:
 		move = Vector2.LEFT + Vector2.DOWN * 0.5
-	# Right arrow -> move top-right
 	elif input == Vector2.RIGHT:
 		move = Vector2.RIGHT + Vector2.UP * 0.5
-	# Diagonal top-right -> move straight up
 	elif input == Vector2(1, -1):
 		move = Vector2.UP
-	# Diagonal top-left -> move straight left
 	elif input == Vector2(-1, -1):
 		move = Vector2.LEFT
-	# Diagonal bottom-right -> move straight right
 	elif input == Vector2(1, 1):
 		move = Vector2.RIGHT
-	# Diagonal bottom-left -> move straight down
 	elif input == Vector2(-1, 1):
 		move = Vector2.DOWN
 	
@@ -65,7 +77,6 @@ func _physics_process(delta: float) -> void:
 	if move != Vector2.ZERO:
 		facing_direction = move
 	
-	# --- Dash mechanic ---
 	if Input.is_action_just_pressed("ui_focus_next"):
 		dash_timer = DASH_TIME
 		dash_direction = facing_direction
@@ -75,13 +86,17 @@ func _physics_process(delta: float) -> void:
 		velocity = dash_direction * DASH_SPEED
 	else:
 		var speed := WALK_SPEED
+		
 		if Input.is_key_pressed(KEY_SHIFT):
 			speed = RUN_SPEED
+		
+		if has_effect:
+			speed *= speed_mult
+		
 		velocity = move * speed
 	
 	move_and_slide()
 	
-	# --- Jump & gravity ---
 	var want_jump := Input.is_action_just_pressed("ui_accept")
 	
 	if want_jump and height == 0:
@@ -94,22 +109,24 @@ func _physics_process(delta: float) -> void:
 		height = 0
 		vertical_velocity = 0
 	
-	# --- Visual height offset for isometric ---
 	var iso_offset := Vector2(
 		facing_direction.x - facing_direction.y,
 		(facing_direction.x + facing_direction.y) * 0.5
 	).normalized()
-
+	
 	var extra_offset := 0.0
+	
 	if debug_offset_down:
 		extra_offset = 10.0
 	
+	if has_effect:
+		extra_offset += visual_offset
+	
 	sprite.position = Vector2(
 		iso_offset.x * height * 0.15,
-		-height + extra_offset
+		- height + extra_offset
 	)
 	
-	# --- Animation ---
 	if velocity.length() > 0:
 		sprite.speed_scale = 1.8 if Input.is_key_pressed(KEY_SHIFT) else 1.0
 		sprite.play("default")
