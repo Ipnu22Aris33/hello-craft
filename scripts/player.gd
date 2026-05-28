@@ -9,81 +9,84 @@ const DASH_TIME := 0.15
 const JUMP_FORCE := 220.0
 const GRAVITY := 500.0
 
-
-# ------------------------------------------------
-# JUMP
-# ------------------------------------------------
+@onready var sprite := $AnimatedSprite2D
 
 var height := 0.0
 var vertical_velocity := 0.0
 
-# ------------------------------------------------
-# DASH
-# ------------------------------------------------
-
 var dash_timer := 0.0
 var dash_direction := Vector2.ZERO
+var facing_direction := Vector2.DOWN
 
-# arah terakhir player
-var facing_direction := Vector2.RIGHT
-
-func _physics_process(delta):
-	# ------------------------------------------------
-	# INPUT
-	# ------------------------------------------------
+func _physics_process(delta: float) -> void:
 	var input := Vector2(
 		Input.get_axis("ui_left", "ui_right"),
 		Input.get_axis("ui_up", "ui_down")
 	)
 
-	# ------------------------------------------------
-	# ISOMETRIC
-	# ------------------------------------------------
-
-	var iso := Vector2(
-		input.x - input.y,
-		(input.x + input.y) * 0.5
-	)
-
-	if iso.length() > 0:
-		iso = iso.normalized()
-
-		# simpan arah terakhir
-		facing_direction = iso
+	var move := Vector2.ZERO
 
 	# ------------------------------------------------
-	# DASH START
+	# SINGLE DIRECTION
+	# ------------------------------------------------
+
+	# UP = 
+	if input == Vector2.UP:
+		move = Vector2.LEFT + Vector2.UP * 0.5
+
+	# DOWN
+	elif input == Vector2.DOWN:
+		move = Vector2.RIGHT + Vector2.DOWN * 0.5
+
+	# LEFT
+	elif input == Vector2.LEFT:
+		move = Vector2.LEFT + Vector2.DOWN * 0.5
+
+	# RIGHT
+	elif input == Vector2.RIGHT:
+		move = Vector2.RIGHT + Vector2.UP * 0.5
+
+	# RIGHT + UP = lurus atas
+	elif input == Vector2(1, -1):
+		move = Vector2.UP
+
+	# LEFT + UP = lurus kiri
+	elif input == Vector2(-1, -1):
+		move = Vector2.LEFT
+
+	# RIGHT + DOWN = lurus kanan
+	elif input == Vector2(1, 1):
+		move = Vector2.RIGHT
+
+	# LEFT + DOWN = lurus bawah
+	elif input == Vector2(-1, 1):
+		move = Vector2.DOWN
+
+	move = move.normalized()
+
+	if move != Vector2.ZERO:
+		facing_direction = move
+
+	# ------------------------------------------------
+	# DASH
 	# ------------------------------------------------
 
 	if Input.is_action_just_pressed("ui_focus_next"):
 		dash_timer = DASH_TIME
 		dash_direction = facing_direction
 
-	# ------------------------------------------------
-	# DASH MOVE
-	# ------------------------------------------------
-
 	if dash_timer > 0:
 		dash_timer -= delta
 
 		velocity = dash_direction * DASH_SPEED
 
-	# ------------------------------------------------
-	# NORMAL MOVE
-	# ------------------------------------------------
-
 	else:
 		var speed := WALK_SPEED
 
-		# RUN
 		if Input.is_key_pressed(KEY_SHIFT):
 			speed = RUN_SPEED
 
-		velocity = iso * speed
-
-	# ------------------------------------------------
-	# MOVE
-	# ------------------------------------------------
+		velocity = move * speed
 
 	move_and_slide()
 
@@ -102,8 +105,20 @@ func _physics_process(delta):
 		height = 0
 		vertical_velocity = 0
 
+	sprite.position.y = - height
+
 	# ------------------------------------------------
-	# VISUAL HEIGHT
+	# ANIMATION
 	# ------------------------------------------------
 
-	$Sprite2D.position.y = - height
+	if velocity.length() > 0:
+		sprite.speed_scale = (
+			1.8
+			if Input.is_key_pressed(KEY_SHIFT)
+			else 1.0
+		)
+
+		sprite.play("default")
+
+	else:
+		sprite.stop()
