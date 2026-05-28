@@ -214,9 +214,9 @@ sources/1 = SubResource("TileSetAtlasSource_hlk0d")
 
 [node name="World" type="Node2D" unique_id=914060483]
 script = ExtResource("1_kqs1s")
+render_distance = 8
 chunk_scene = ExtResource("2_32lhk")
 player_scene = ExtResource("3_hlk0d")
-world_seed = 16
 
 [node name="Ground" type="TileMapLayer" parent="." unique_id=41944573]
 y_sort_enabled = true
