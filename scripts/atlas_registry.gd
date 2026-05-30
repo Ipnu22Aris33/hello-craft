@@ -8,13 +8,18 @@ const GROUNDS := {
 		"snow": {"atlas_coord": Vector2i(3, 0), "replaceable": true},
 		"dirt_snow": {"atlas_coord": Vector2i(4, 0), "replaceable": true},
 		"stone": {"atlas_coord": Vector2i(0, 1), "replaceable": false},
+	},
+	1: {
+		"grass_block": {"atlas_coord": Vector2i(2, 2), "replaceable": true},
+		"dirt_block": {"atlas_coord": Vector2i(3, 2), "replaceable": true},
+		"sand_block": {"atlas_coord": Vector2i(4, 2), "replaceable": true},
 	}
 }
 
 const LIQUIDS := {
-	0: {
+	1: {
 		"water": {
-			"atlas_coord": Vector2i(4, 1),
+			"atlas_coord": Vector2i(10, 10),
 			"replaceable": false,
 			"effect": {
 				"speed_mult": 0.5,
@@ -42,10 +47,10 @@ const LIQUIDS := {
 }
 
 const DECORATIONS := {
-	2: {
+	0: {
 		"tree": {"atlas_coord": Vector2i(0, 0), "destructible": true},
 		"rock": {"atlas_coord": Vector2i(1, 0), "destructible": true},
-		"bush": {"atlas_coord": Vector2i(2, 0), "destructible": true},
+		"bush": {"atlas_coord": Vector2i(7, 2), "destructible": true},
 	}
 }
 

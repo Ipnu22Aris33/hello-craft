@@ -6,7 +6,7 @@
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3li8b"]
 atlas = ExtResource("2_v6fml")
-region = Rect2(32, 32, 32, 32)
+region = Rect2(0, 0, 32, 64)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_mdl7e"]
 animations = [{
@@ -19,20 +19,22 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_v6fml"]
-radius = 14.764823
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_3li8b"]
+points = PackedVector2Array(0, -6, 14, 0, 0, 6, -14, 0)
 
 [node name="Player" type="CharacterBody2D" unique_id=718565611]
+z_index = 1
+y_sort_enabled = true
 motion_mode = 1
 script = ExtResource("1_v6fml")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1279770642]
 texture_filter = 1
-position = Vector2(-8.344651e-07, 4.172325e-07)
 sprite_frames = SubResource("SpriteFrames_mdl7e")
+offset = Vector2(0, -24)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1049742844]
-shape = SubResource("CircleShape2D_v6fml")
+shape = SubResource("ConvexPolygonShape2D_3li8b")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1006031269]
 script = ExtResource("3_3li8b")

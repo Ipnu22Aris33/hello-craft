@@ -31,6 +31,9 @@ var world: Node2D
 # -------------------------------------------------
 # APPLY EFFECT DARI BLOCK
 # -------------------------------------------------
+
+
+
 func apply_block_effect(block: Dictionary) -> void:
 	var effect = block.get("effect", {})
 	has_effect = not effect.is_empty()
